@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manajemen Usaha Cireng Frozen</title>
-    <!-- Tailwind CSS for modern, eye-catching UI -->
+    <title>Manajemen Usaha Cireng Frozen - Cloud</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -47,7 +49,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl font-bold text-gray-900 tracking-tight">Cireng Frozen Manager</h1>
-                    <p class="text-xs text-gray-500">Pencatatan Pesanan & Keuangan Praktis</p>
+                    <p class="text-xs text-gray-500">Cloud Synchronized (Supabase Active)</p>
                 </div>
             </div>
             <!-- Navigation Tabs -->
@@ -58,6 +60,9 @@
                 <button onclick="switchTab('orders')" id="btn-orders" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-semibold transition-all text-gray-600 hover:text-gray-900 flex items-center justify-center gap-2">
                     <i class="fa-solid fa-basket-shopping"></i> Pesanan
                 </button>
+                <button onclick="switchTab('production')" id="btn-production" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-semibold transition-all text-gray-600 hover:text-gray-900 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-calendar-days"></i> Jadwal PO & Produksi
+                </button>
                 <button onclick="switchTab('expenses')" id="btn-expenses" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-semibold transition-all text-gray-600 hover:text-gray-900 flex items-center justify-center gap-2">
                     <i class="fa-solid fa-wallet"></i> Pengeluaran
                 </button>
@@ -67,8 +72,8 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+        <!-- Dashboard Tab -->
         <div id="tab-dashboard" class="tab-content active space-y-6">
-            <!-- Quick Stats Banner -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="bg-white p-6 rounded-3xl shadow-sm border border-orange-100 flex items-center justify-between">
                     <div>
@@ -108,55 +113,50 @@
                 </div>
             </div>
 
-            <!-- Analytics & Quick Action Section -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Varian Terlaris Breakdown -->
                 <div class="bg-white p-6 rounded-3xl shadow-sm border border-orange-100 lg:col-span-2 space-y-4">
                     <h2 class="text-base font-bold text-gray-900 flex items-center gap-2">
                         <i class="fa-solid fa-chart-bar text-brand-600"></i> Statistik Penjualan Varian Cireng
                     </h2>
-                    <div id="variant-stats-container" class="space-y-3">
-                        <!-- Populated by JS -->
-                    </div>
+                    <div id="variant-stats-container" class="space-y-3"></div>
                 </div>
 
-                <!-- Quick Action Card -->
                 <div class="bg-gradient-to-br from-brand-600 to-amber-600 text-white p-6 rounded-3xl shadow-lg flex flex-col justify-between space-y-6">
                     <div>
-                        <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full font-medium">Praktis & Cepat</span>
-                        <h2 class="text-xl font-bold mt-3">Catat Pesanan atau Pengeluaran Baru</h2>
-                        <p class="text-amber-100 text-xs mt-1">Kelola transaksi harian usahamu langsung dari satu tempat.</p>
+                        <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full font-medium">Cloud Database Active</span>
+                        <h2 class="text-xl font-bold mt-3">Catat Pesanan atau Jadwal PO</h2>
+                        <p class="text-amber-100 text-xs mt-1">Atur tanggal produksi dan rekap pesanan otomatis dengan harga standar (Rp 10k / Moza Rp 15k).</p>
                     </div>
                     <div class="space-y-2">
                         <button onclick="switchTab('orders'); openOrderModal();" class="w-full bg-white text-brand-700 font-semibold py-3 px-4 rounded-2xl shadow hover:bg-amber-50 transition text-sm flex items-center justify-center gap-2">
                             <i class="fa-solid fa-plus-circle"></i> Tambah Pesanan Baru
                         </button>
-                        <button onclick="switchTab('expenses'); openExpenseModal();" class="w-full bg-brand-700 text-white border border-brand-500 font-semibold py-3 px-4 rounded-2xl shadow hover:bg-brand-800 transition text-sm flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-minus-circle"></i> Tambah Pengeluaran
+                        <button onclick="switchTab('production');" class="w-full bg-brand-700 text-white border border-brand-500 font-semibold py-3 px-4 rounded-2xl shadow hover:bg-brand-800 transition text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calendar-days"></i> Lihat Rekap Per Tanggal PO
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Orders Tab -->
         <div id="tab-orders" class="tab-content space-y-6">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-orange-100">
                 <div>
                     <h2 class="text-lg font-bold text-gray-900">Daftar Pesanan Pelanggan</h2>
-                    <p class="text-xs text-gray-500">Kelola pesanan cireng frozen masuk beserta varian rasanya.</p>
+                    <p class="text-xs text-gray-500">Kelola pesanan masuk dan jadwal tanggal produksinya.</p>
                 </div>
                 <button onclick="openOrderModal()" class="bg-brand-600 hover:bg-brand-700 text-white font-semibold px-5 py-3 rounded-2xl shadow transition text-sm flex items-center gap-2">
                     <i class="fa-solid fa-plus"></i> Tambah Pesanan
                 </button>
             </div>
 
-            <!-- Orders Table Container -->
             <div class="bg-white rounded-3xl shadow-sm border border-orange-100 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-gray-50 text-gray-400 text-xs uppercase tracking-wider border-b border-gray-100">
-                                <th class="py-4 px-6 font-semibold">Tanggal & Nama</th>
+                                <th class="py-4 px-6 font-semibold">Tgl Produksi / PO & Nama</th>
                                 <th class="py-4 px-6 font-semibold">Kontak</th>
                                 <th class="py-4 px-6 font-semibold">Detail Varian & Jumlah</th>
                                 <th class="py-4 px-6 font-semibold">Total Harga</th>
@@ -164,18 +164,33 @@
                                 <th class="py-4 px-6 font-semibold text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="orders-table-body" class="divide-y divide-gray-100 text-sm">
-                            <!-- Populated dynamically -->
-                        </tbody>
+                        <tbody id="orders-table-body" class="divide-y divide-gray-100 text-sm"></tbody>
                     </table>
                 </div>
                 <div id="orders-empty" class="hidden text-center py-12 text-gray-400">
                     <i class="fa-solid fa-basket-shopping text-4xl mb-3 text-gray-300"></i>
-                    <p class="text-sm">Belum ada data pesanan.</p>
+                    <p class="text-sm">Belum ada data pesanan di Supabase.</p>
                 </div>
             </div>
         </div>
 
+        <!-- Production Schedule Tab -->
+        <div id="tab-production" class="tab-content space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-orange-100">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-900">Jadwal Produksi & Rekap PO Berdasarkan Tanggal</h2>
+                    <p class="text-xs text-gray-500">Pilih tanggal pembuatan pesanan untuk melihat rekap total bungkus per varian yang harus disiapkan.</p>
+                </div>
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <label class="text-xs font-semibold text-gray-600 whitespace-nowrap">Pilih Tgl Buat:</label>
+                    <input type="date" id="filter-production-date" onchange="renderProductionSchedule()" class="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:border-brand-500">
+                </div>
+            </div>
+
+            <div id="production-content-container" class="space-y-6"></div>
+        </div>
+
+        <!-- Expenses Tab -->
         <div id="tab-expenses" class="tab-content space-y-6">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-orange-100">
                 <div>
@@ -187,7 +202,6 @@
                 </button>
             </div>
 
-            <!-- Expenses Table Container -->
             <div class="bg-white rounded-3xl shadow-sm border border-orange-100 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -200,14 +214,12 @@
                                 <th class="py-4 px-6 font-semibold text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="expenses-table-body" class="divide-y divide-gray-100 text-sm">
-                            <!-- Populated dynamically -->
-                        </tbody>
+                        <tbody id="expenses-table-body" class="divide-y divide-gray-100 text-sm"></tbody>
                     </table>
                 </div>
                 <div id="expenses-empty" class="hidden text-center py-12 text-gray-400">
                     <i class="fa-solid fa-wallet text-4xl mb-3 text-gray-300"></i>
-                    <p class="text-sm">Belum ada data pengeluaran.</p>
+                    <p class="text-sm">Belum ada data pengeluaran di Supabase.</p>
                 </div>
             </div>
         </div>
@@ -225,42 +237,66 @@
             </div>
             <form id="order-form" onsubmit="saveOrder(event)" class="space-y-4">
                 <input type="hidden" id="order-id">
+                
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Tanggal Produksi / PO</label>
+                        <input type="date" id="order-production-date" required class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-brand-500">
+                    </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-600 mb-1">Nama Pemesan</label>
                         <input type="text" id="order-name" required placeholder="Cth: Ibu Siti" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-brand-500">
                     </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">No. WhatsApp / Kontak</label>
-                        <input type="text" id="order-phone" placeholder="Cth: 08123456789" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-brand-500">
-                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-600 mb-1">No. WhatsApp / Kontak</label>
+                    <input type="text" id="order-phone" placeholder="Cth: 08123456789" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-brand-500">
                 </div>
 
                 <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 space-y-3">
-                    <label class="block text-xs font-bold text-amber-900 uppercase tracking-wider">Jumlah Pesanan per Varian (Paket/Bungkus)</label>
+                    <div class="flex justify-between items-center">
+                        <label class="block text-xs font-bold text-amber-900 uppercase tracking-wider">Jumlah Pesanan per Varian (Isi 10 cireng/bks)</label>
+                        <span class="text-[11px] text-amber-700 font-semibold bg-amber-100 px-2 py-0.5 rounded-lg">Auto Kalkulasi Harga</span>
+                    </div>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100">
-                            <span class="text-xs font-medium text-gray-700">Ayam Pedas</span>
-                            <input type="number" min="0" value="0" id="var-ayam-pedas" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
+                            <div>
+                                <span class="text-xs font-medium text-gray-700 block">Ayam Pedas</span>
+                                <span class="text-[10px] text-gray-400">Rp 10.000 / bks</span>
+                            </div>
+                            <input type="number" min="0" value="0" id="var-ayam-pedas" oninput="calculateTotalOrder()" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
                         </div>
                         <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100">
-                            <span class="text-xs font-medium text-gray-700">Ayam Original</span>
-                            <input type="number" min="0" value="0" id="var-ayam-original" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
+                            <div>
+                                <span class="text-xs font-medium text-gray-700 block">Ayam Original</span>
+                                <span class="text-[10px] text-gray-400">Rp 10.000 / bks</span>
+                            </div>
+                            <input type="number" min="0" value="0" id="var-ayam-original" oninput="calculateTotalOrder()" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
                         </div>
                         <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100">
-                            <span class="text-xs font-medium text-gray-700">Keju</span>
-                            <input type="number" min="0" value="0" id="var-keju" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
+                            <div>
+                                <span class="text-xs font-medium text-gray-700 block">Keju</span>
+                                <span class="text-[10px] text-gray-400">Rp 10.000 / bks</span>
+                            </div>
+                            <input type="number" min="0" value="0" id="var-keju" oninput="calculateTotalOrder()" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
                         </div>
                         <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100">
-                            <span class="text-xs font-medium text-gray-700">Moza (Mozzarella)</span>
-                            <input type="number" min="0" value="0" id="var-moza" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
+                            <div>
+                                <span class="text-xs font-medium text-purple-700 block font-semibold">Moza (Mozzarella)</span>
+                                <span class="text-[10px] text-purple-500">Rp 15.000 / bks</span>
+                            </div>
+                            <input type="number" min="0" value="0" id="var-moza" oninput="calculateTotalOrder()" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
                         </div>
                     </div>
                     <div class="bg-white p-3 rounded-xl border border-gray-100 space-y-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-xs font-medium text-gray-700">Mix 2 Rasa</span>
-                            <input type="number" min="0" value="0" id="var-mix" onchange="toggleMixDetail()" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
+                            <div>
+                                <span class="text-xs font-medium text-gray-700 block">Mix 2 Rasa</span>
+                                <span class="text-[10px] text-gray-400">Rp 10.000 / bks (Bisa disesuaikan)</span>
+                            </div>
+                            <input type="number" min="0" value="0" id="var-mix" oninput="calculateTotalOrder(); toggleMixDetail();" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
                         </div>
                         <div id="mix-detail-box" class="hidden pt-2 border-t border-gray-100">
                             <label class="block text-[11px] text-gray-500 mb-1">Sebutkan 2 rasa yang dicampur untuk pesanan mix:</label>
@@ -271,8 +307,8 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Total Harga (Rp)</label>
-                        <input type="number" id="order-total" required placeholder="Cth: 75000" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-brand-500">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Total Harga (Rp) <span class="text-[10px] text-brand-600">*Bisa diedit manual</span></label>
+                        <input type="number" id="order-total" required placeholder="Cth: 50000" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-bold text-brand-700 focus:outline-none focus:border-brand-500">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-600 mb-1">Status Pembayaran / Pesanan</label>
@@ -328,36 +364,21 @@
         </div>
     </div>
 
-    <!-- Custom Notification Toast / Modal instead of alert() -->
+    <!-- Custom Notification Toast -->
     <div id="toast" class="fixed bottom-6 right-6 bg-gray-900 text-white px-5 py-3 rounded-2xl shadow-xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 text-sm font-medium flex items-center gap-3">
         <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
-        <span id="toast-message">Berhasil menyimpan data!</span>
+        <span id="toast-message">Berhasil sinkronisasi Supabase!</span>
     </div>
 
     <script>
-        // State Management stored in localStorage for seamless single-session / cross-session usage
-        let orders = JSON.parse(localStorage.getItem('cireng_orders')) || [
-            {
-                id: '1',
-                name: 'Bpk. Budi',
-                phone: '081298765432',
-                variants: { 'Ayam Pedas': 2, 'Keju': 1, 'Ayam Original': 0, 'Moza': 0, 'Mix': 0 },
-                mixNote: '',
-                total: 75000,
-                status: 'Lunas',
-                date: '2026-10-19'
-            }
-        ];
+        // Supabase Initialization
+        const SUPABASE_URL = 'https://rplebtshrhuvbggnxanj.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwbGVidHNocmh1dmJnZ254YW5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzNTk1NDEsImV4cCI6MjEwNzkzNTU0MX0.IxgfOcaZWLk5TgNJP-hVvZvrasp74t6iXqqNc398x1o';
+        
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let expenses = JSON.parse(localStorage.getItem('cireng_expenses')) || [
-            {
-                id: '1',
-                desc: 'Beli Tepung Tapioka & Ayam 2kg',
-                category: 'Bahan Baku',
-                amount: 85000,
-                date: '2026-10-18'
-            }
-        ];
+        let orders = [];
+        let expenses = [];
 
         // Tab Switching Logic
         function switchTab(tabId) {
@@ -371,9 +392,13 @@
             const activeBtn = document.getElementById('btn-' + tabId);
             activeBtn.classList.remove('text-gray-600');
             activeBtn.classList.add('bg-white', 'text-brand-700', 'shadow-sm');
+
+            if(tabId === 'production') {
+                initProductionDatePicker();
+            }
         }
 
-        // Show Custom Toast Notification (No alert() used!)
+        // Show Toast Notification
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             const msg = document.getElementById('toast-message');
@@ -392,15 +417,45 @@
             }, 3000);
         }
 
-        // Format Currency Helper
         function formatRupiah(amount) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount);
         }
 
+        // Auto-calculate order price based on variants (Regular 10k, Moza 15k, Mix 10k)
+        function calculateTotalOrder() {
+            const pAyamPedas = parseInt(document.getElementById('var-ayam-pedas').value) || 0;
+            const pAyamOriginal = parseInt(document.getElementById('var-ayam-original').value) || 0;
+            const pKeju = parseInt(document.getElementById('var-keju').value) || 0;
+            const pMoza = parseInt(document.getElementById('var-moza').value) || 0;
+            const pMix = parseInt(document.getElementById('var-mix').value) || 0;
+
+            let calculated = (pAyamPedas * 10000) + (pAyamOriginal * 10000) + (pKeju * 10000) + (pMoza * 15000) + (pMix * 10000);
+            
+            document.getElementById('order-total').value = calculated;
+        }
+
+        // Fetch Data from Supabase
+        async function fetchDataFromSupabase() {
+            try {
+                const { data: ordersData, error: ordersError } = await supabaseClient.from('orders').select('*');
+                if(ordersError) throw ordersError;
+                orders = ordersData || [];
+
+                const { data: expensesData, error: expensesError } = await supabaseClient.from('expenses').select('*');
+                if(expensesError) throw expensesError;
+                expenses = expensesData || [];
+
+                refreshAll();
+            } catch (err) {
+                console.error('Gagal mengambil data dari Supabase:', err.message);
+                showToast('Gagal terhubung ke database Supabase', 'warn');
+            }
+        }
+
         // Render Dashboard & Summaries
         function renderDashboard() {
-            let totalRevenue = orders.reduce((sum, o) => sum + Number(o.total), 0);
-            let totalExpenses = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+            let totalRevenue = orders.reduce((sum, o) => sum + Number(o.total || 0), 0);
+            let totalExpenses = expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
             let netProfit = totalRevenue - totalExpenses;
 
             document.getElementById('stat-revenue').innerText = formatRupiah(totalRevenue);
@@ -412,18 +467,18 @@
             
             document.getElementById('stat-orders-count').innerText = orders.length;
 
-            // Calculate Varian Totals
             let variantCounts = { 'Ayam Pedas': 0, 'Ayam Original': 0, 'Keju': 0, 'Moza': 0, 'Mix': 0 };
             orders.forEach(o => {
-                if(o.variants) {
-                    for(let k in o.variants) {
-                        variantCounts[k] = (variantCounts[k] || 0) + Number(o.variants[k]);
+                let vObj = o.variants;
+                if(typeof vObj === 'string') { try { vObj = JSON.parse(vObj); } catch(e) { vObj = {}; } }
+                if(vObj) {
+                    for(let k in vObj) {
+                        variantCounts[k] = (variantCounts[k] || 0) + Number(vObj[k] || 0);
                     }
                 }
             });
 
-            let totalPacks = Object.values(variantCounts).reduce((a, b) => a + b, 0) || 1; // avoid div by zero
-
+            let totalPacks = Object.values(variantCounts).reduce((a, b) => a + b, 0) || 1;
             const variantContainer = document.getElementById('variant-stats-container');
             variantContainer.innerHTML = '';
 
@@ -442,8 +497,8 @@
                 variantContainer.innerHTML += `
                     <div class="space-y-1">
                         <div class="flex justify-between text-xs font-semibold">
-                            <span class="text-gray-700">${v}</span>
-                            <span class="text-gray-500">${count} bungkus (${percentage}%)</span>
+                            <span class="text-gray-700">${v} ${v === 'Moza' ? '(Rp 15k)' : '(Rp 10k)'}</span>
+                            <span class="text-gray-500">${count} bks (${percentage}%)</span>
                         </div>
                         <div class="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
                             <div class="${variantColors[v] || 'bg-brand-500'} h-2.5 rounded-full transition-all duration-500" style="width: ${percentage}%"></div>
@@ -465,31 +520,33 @@
             }
             emptyState.classList.add('hidden');
 
-            // Sort descending by date
-            const sortedOrders = [...orders].reverse();
+            orders.forEach(o => {
+                let vObj = o.variants;
+                if(typeof vObj === 'string') { try { vObj = JSON.parse(vObj); } catch(e) { vObj = {}; } }
 
-            sortedOrders.forEach(o => {
                 let variantBadges = '';
-                if(o.variants) {
-                    for(let v in o.variants) {
-                        if(o.variants[v] > 0) {
-                            variantBadges += `<span class="inline-block bg-orange-50 text-brand-700 text-[11px] font-medium px-2 py-0.5 rounded-lg mr-1 mb-1">${v}: ${o.variants[v]}</span>`;
+                if(vObj) {
+                    for(let v in vObj) {
+                        if(vObj[v] > 0) {
+                            variantBadges += `<span class="inline-block bg-orange-50 text-brand-700 text-[11px] font-medium px-2 py-0.5 rounded-lg mr-1 mb-1">${v}: ${vObj[v]}</span>`;
                         }
                     }
                 }
-                if(o.mixNote) {
-                    variantBadges += `<div class="text-[11px] text-gray-400 italic">Mix: ${o.mixNote}</div>`;
+                if(o.mix_note) {
+                    variantBadges += `<div class="text-[11px] text-gray-400 italic">Mix: ${o.mix_note}</div>`;
                 }
 
                 let statusBadgeColor = 'bg-amber-50 text-amber-700 border border-amber-200';
                 if(o.status === 'Lunas') statusBadgeColor = 'bg-blue-50 text-blue-700 border border-blue-200';
                 if(o.status === 'Selesai') statusBadgeColor = 'bg-emerald-50 text-emerald-700 border border-emerald-200';
 
+                let poDate = o.production_date || o.date || '-';
+
                 tbody.innerHTML += `
                     <tr class="hover:bg-gray-50/50 transition">
                         <td class="py-4 px-6">
                             <div class="font-bold text-gray-900">${o.name}</div>
-                            <div class="text-xs text-gray-400">${o.date}</div>
+                            <div class="text-xs text-amber-700 font-semibold flex items-center gap-1 mt-0.5"><i class="fa-solid fa-calendar-day"></i> PO: ${poDate}</div>
                         </td>
                         <td class="py-4 px-6 text-gray-600 text-xs">${o.phone || '-'}</td>
                         <td class="py-4 px-6 max-w-xs">${variantBadges}</td>
@@ -506,6 +563,135 @@
             });
         }
 
+        // Initialize Production Date Picker
+        function initProductionDatePicker() {
+            const datePicker = document.getElementById('filter-production-date');
+            if(!datePicker.value && orders.length > 0) {
+                let dates = orders.map(o => o.production_date || o.date).filter(Boolean).sort();
+                datePicker.value = dates[dates.length - 1] || new Date().toISOString().split('T')[0];
+            } else if(!datePicker.value) {
+                datePicker.value = new Date().toISOString().split('T')[0];
+            }
+            renderProductionSchedule();
+        }
+
+        // Render Production Schedule & Re-cap by Date
+        function renderProductionSchedule() {
+            const selectedDate = document.getElementById('filter-production-date').value;
+            const container = document.getElementById('production-content-container');
+            container.innerHTML = '';
+
+            const filteredOrders = orders.filter(o => (o.production_date || o.date) === selectedDate);
+
+            let dateVariantCounts = { 'Ayam Pedas': 0, 'Ayam Original': 0, 'Keju': 0, 'Moza': 0, 'Mix': 0 };
+            let totalRevenueDate = 0;
+
+            filteredOrders.forEach(o => {
+                totalRevenueDate += Number(o.total || 0);
+                let vObj = o.variants;
+                if(typeof vObj === 'string') { try { vObj = JSON.parse(vObj); } catch(e) { vObj = {}; } }
+                if(vObj) {
+                    for(let k in vObj) {
+                        dateVariantCounts[k] = (dateVariantCounts[k] || 0) + Number(vObj[k] || 0);
+                    }
+                }
+            });
+
+            let totalPacksDate = Object.values(dateVariantCounts).reduce((a, b) => a + b, 0);
+
+            let summaryHTML = `
+                <div class="bg-gradient-to-br from-brand-600 to-amber-600 text-white p-6 rounded-3xl shadow-md space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                        <div>
+                            <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full font-medium">Rekap Target Pembuatan</span>
+                            <h3 class="text-xl font-bold mt-1">Tanggal PO / Produksi: ${selectedDate}</h3>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-amber-100">Total Nilai PO</p>
+                            <p class="text-lg font-bold">${formatRupiah(totalRevenueDate)}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
+                        <div class="bg-white/10 p-3 rounded-xl">
+                            <span class="block text-[11px] text-amber-100">Ayam Pedas (10k)</span>
+                            <span class="text-lg font-bold">${dateVariantCounts['Ayam Pedas']} bks</span>
+                        </div>
+                        <div class="bg-white/10 p-3 rounded-xl">
+                            <span class="block text-[11px] text-amber-100">Ayam Original (10k)</span>
+                            <span class="text-lg font-bold">${dateVariantCounts['Ayam Original']} bks</span>
+                        </div>
+                        <div class="bg-white/10 p-3 rounded-xl">
+                            <span class="block text-[11px] text-amber-100">Keju (10k)</span>
+                            <span class="text-lg font-bold">${dateVariantCounts['Keju']} bks</span>
+                        </div>
+                        <div class="bg-white/10 p-3 rounded-xl border border-purple-300/30">
+                            <span class="block text-[11px] text-purple-200">Moza (15k)</span>
+                            <span class="text-lg font-bold">${dateVariantCounts['Moza']} bks</span>
+                        </div>
+                        <div class="bg-white/10 p-3 rounded-xl col-span-2 sm:col-span-1">
+                            <span class="block text-[11px] text-amber-100">Mix 2 Rasa</span>
+                            <span class="text-lg font-bold">${dateVariantCounts['Mix']} bks</span>
+                        </div>
+                    </div>
+                    <div class="text-xs text-amber-100 text-center font-medium">
+                        Total Keseluruhan Cireng yang Harus Dibikin Crew untuk Tanggal Ini: <strong class="text-white text-sm">${totalPacksDate} Bungkus</strong>
+                    </div>
+                </div>
+            `;
+
+            let listHTML = `
+                <div class="bg-white rounded-3xl shadow-sm border border-orange-100 p-6 space-y-4">
+                    <h3 class="text-base font-bold text-gray-900 flex items-center gap-2">
+                        <i class="fa-solid fa-address-book text-brand-600"></i> Daftar Pelanggan PO Tanggal ${selectedDate} (${filteredOrders.length} Pesanan)
+                    </h3>
+            `;
+
+            if(filteredOrders.length === 0) {
+                listHTML += `
+                    <div class="text-center py-12 text-gray-400">
+                        <i class="fa-solid fa-calendar-xmark text-4xl mb-3 text-gray-300"></i>
+                        <p class="text-sm">Tidak ada jadwal produksi / PO pada tanggal ${selectedDate}.</p>
+                    </div>
+                `;
+            } else {
+                listHTML += `<div class="space-y-3">`;
+                filteredOrders.forEach(o => {
+                    let vObj = o.variants;
+                    if(typeof vObj === 'string') { try { vObj = JSON.parse(vObj); } catch(e) { vObj = {}; } }
+
+                    let badges = '';
+                    for(let k in vObj) {
+                        if(vObj[k] > 0) badges += `<span class="bg-orange-50 text-brand-700 text-xs px-2.5 py-1 rounded-lg font-medium mr-1">${k}: ${vObj[k]}</span>`;
+                    }
+                    if(o.mix_note) badges += `<span class="text-xs text-gray-500 italic">(${o.mix_note})</span>`;
+
+                    let statusColor = o.status === 'Lunas' ? 'bg-blue-50 text-blue-700' : (o.status === 'Selesai' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700');
+
+                    listHTML += `
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 rounded-2xl bg-gray-50 border border-gray-100 gap-3">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <h4 class="font-bold text-gray-900 text-sm">${o.name}</h4>
+                                    <span class="text-xs text-gray-400">(${o.phone || 'Tanpa Kontak'})</span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${statusColor}">${o.status}</span>
+                                </div>
+                                <div class="flex flex-wrap gap-1">${badges}</div>
+                            </div>
+                            <div class="text-right w-full sm:w-auto flex sm:flex-col justify-between items-center sm:items-end">
+                                <span class="text-xs text-gray-400">Total Harga</span>
+                                <span class="font-bold text-gray-900 text-sm">${formatRupiah(o.total)}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                listHTML += `</div>`;
+            }
+
+            listHTML += `</div>`;
+            container.innerHTML = summaryHTML + listHTML;
+        }
+
         // Render Expenses Table
         function renderExpenses() {
             const tbody = document.getElementById('expenses-table-body');
@@ -518,9 +704,7 @@
             }
             emptyState.classList.add('hidden');
 
-            const sortedExpenses = [...expenses].reverse();
-
-            sortedExpenses.forEach(e => {
+            expenses.forEach(e => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-gray-50/50 transition">
                         <td class="py-4 px-6 text-xs text-gray-500">${e.date}</td>
@@ -553,17 +737,21 @@
             document.getElementById('order-modal').classList.remove('hidden');
             if(id) {
                 document.getElementById('order-modal-title').innerText = 'Edit Pesanan';
-                const o = orders.find(item => item.id === id);
+                const o = orders.find(item => item.id == id);
                 if(o) {
+                    let vObj = o.variants;
+                    if(typeof vObj === 'string') { try { vObj = JSON.parse(vObj); } catch(e) { vObj = {}; } }
+
                     document.getElementById('order-id').value = o.id;
+                    document.getElementById('order-production-date').value = o.production_date || o.date || new Date().toISOString().split('T')[0];
                     document.getElementById('order-name').value = o.name;
                     document.getElementById('order-phone').value = o.phone || '';
-                    document.getElementById('var-ayam-pedas').value = o.variants['Ayam Pedas'] || 0;
-                    document.getElementById('var-ayam-original').value = o.variants['Ayam Original'] || 0;
-                    document.getElementById('var-keju').value = o.variants['Keju'] || 0;
-                    document.getElementById('var-moza').value = o.variants['Moza'] || 0;
-                    document.getElementById('var-mix').value = o.variants['Mix'] || 0;
-                    document.getElementById('order-mix-note').value = o.mixNote || '';
+                    document.getElementById('var-ayam-pedas').value = vObj['Ayam Pedas'] || 0;
+                    document.getElementById('var-ayam-original').value = vObj['Ayam Original'] || 0;
+                    document.getElementById('var-keju').value = vObj['Keju'] || 0;
+                    document.getElementById('var-moza').value = vObj['Moza'] || 0;
+                    document.getElementById('var-mix').value = vObj['Mix'] || 0;
+                    document.getElementById('order-mix-note').value = o.mix_note || '';
                     document.getElementById('order-total').value = o.total;
                     document.getElementById('order-status').value = o.status;
                     toggleMixDetail();
@@ -572,6 +760,8 @@
                 document.getElementById('order-modal-title').innerText = 'Tambah Pesanan Baru';
                 document.getElementById('order-form').reset();
                 document.getElementById('order-id').value = '';
+                document.getElementById('order-production-date').value = new Date().toISOString().split('T')[0];
+                calculateTotalOrder();
                 toggleMixDetail();
             }
         }
@@ -584,7 +774,7 @@
             document.getElementById('expense-modal').classList.remove('hidden');
             if(id) {
                 document.getElementById('expense-modal-title').innerText = 'Edit Pengeluaran';
-                const e = expenses.find(item => item.id === id);
+                const e = expenses.find(item => item.id == id);
                 if(e) {
                     document.getElementById('expense-id').value = e.id;
                     document.getElementById('expense-desc').value = e.desc;
@@ -602,10 +792,11 @@
             document.getElementById('expense-modal').classList.add('hidden');
         }
 
-        // Save / Update Order
-        function saveOrder(e) {
+        // Save / Update Order to Supabase
+        async function saveOrder(e) {
             e.preventDefault();
             const id = document.getElementById('order-id').value;
+            const production_date = document.getElementById('order-production-date').value;
             const name = document.getElementById('order-name').value;
             const phone = document.getElementById('order-phone').value;
             const variants = {
@@ -615,43 +806,45 @@
                 'Moza': parseInt(document.getElementById('var-moza').value) || 0,
                 'Mix': parseInt(document.getElementById('var-mix').value) || 0,
             };
-            const mixNote = document.getElementById('order-mix-note').value;
+            const mix_note = document.getElementById('order-mix-note').value;
             const total = parseFloat(document.getElementById('order-total').value) || 0;
             const status = document.getElementById('order-status').value;
             const today = new Date().toISOString().split('T')[0];
 
             if(id) {
-                orders = orders.map(o => o.id === id ? { ...o, name, phone, variants, mixNote, total, status } : o);
-                showToast('Pesanan berhasil diperbarui!');
+                const { error } = await supabaseClient
+                    .from('orders')
+                    .update({ name, phone, variants, mix_note, total, status, production_date })
+                    .eq('id', id);
+                if(error) { showToast('Gagal update pesanan: ' + error.message, 'warn'); return; }
+                showToast('Pesanan berhasil diperbarui di Supabase!');
             } else {
-                const newOrder = {
-                    id: Date.now().toString(),
-                    name, phone, variants, mixNote, total, status, date: today
-                };
-                orders.push(newOrder);
-                showToast('Pesanan baru berhasil ditambahkan!');
+                const { error } = await supabaseClient
+                    .from('orders')
+                    .insert([{ name, phone, variants, mix_note, total, status, date: today, production_date }]);
+                if(error) { showToast('Gagal tambah pesanan: ' + error.message, 'warn'); return; }
+                showToast('Pesanan PO baru berhasil disimpan ke Supabase!');
             }
 
-            localStorage.setItem('cireng_orders', JSON.stringify(orders));
             closeOrderModal();
-            refreshAll();
+            fetchDataFromSupabase();
         }
 
         function editOrder(id) {
             openOrderModal(id);
         }
 
-        function deleteOrder(id) {
-            if(confirm('Hapus pesanan ini?')) {
-                orders = orders.filter(o => o.id !== id);
-                localStorage.setItem('cireng_orders', JSON.stringify(orders));
+        async function deleteOrder(id) {
+            if(confirm('Hapus pesanan ini dari database cloud?')) {
+                const { error } = await supabaseClient.from('orders').delete().eq('id', id);
+                if(error) { showToast('Gagal menghapus pesanan', 'warn'); return; }
                 showToast('Pesanan berhasil dihapus.', 'warn');
-                refreshAll();
+                fetchDataFromSupabase();
             }
         }
 
-        // Save / Update Expense
-        function saveExpense(e) {
+        // Save / Update Expense to Supabase
+        async function saveExpense(e) {
             e.preventDefault();
             const id = document.getElementById('expense-id').value;
             const desc = document.getElementById('expense-desc').value;
@@ -660,45 +853,41 @@
             const today = new Date().toISOString().split('T')[0];
 
             if(id) {
-                expenses = expenses.map(ex => ex.id === id ? { ...ex, desc, category, amount } : ex);
+                const { error } = await supabaseClient.from('expenses').update({ desc, category, amount }).eq('id', id);
+                if(error) { showToast('Gagal update pengeluaran: ' + error.message, 'warn'); return; }
                 showToast('Pengeluaran berhasil diperbarui!');
             } else {
-                const newExpense = {
-                    id: Date.now().toString(),
-                    desc, category, amount, date: today
-                };
-                expenses.push(newExpense);
-                showToast('Pengeluaran baru berhasil ditambahkan!');
+                const { error } = await supabaseClient.from('expenses').insert([{ desc, category, amount, date: today }]);
+                if(error) { showToast('Gagal tambah pengeluaran: ' + error.message, 'warn'); return; }
+                showToast('Pengeluaran baru berhasil disimpan ke Supabase!');
             }
 
-            localStorage.setItem('cireng_expenses', JSON.stringify(expenses));
             closeExpenseModal();
-            refreshAll();
+            fetchDataFromSupabase();
         }
 
         function editExpense(id) {
             openExpenseModal(id);
         }
 
-        function deleteExpense(id) {
-            if(confirm('Hapus catatan pengeluaran ini?')) {
-                expenses = expenses.filter(e => e.id !== id);
-                localStorage.setItem('cireng_expenses', JSON.stringify(expenses));
+        async function deleteExpense(id) {
+            if(confirm('Hapus catatan pengeluaran ini dari database cloud?')) {
+                const { error } = await supabaseClient.from('expenses').delete().eq('id', id);
+                if(error) { showToast('Gagal menghapus pengeluaran', 'warn'); return; }
                 showToast('Pengeluaran berhasil dihapus.', 'warn');
-                refreshAll();
+                fetchDataFromSupabase();
             }
         }
 
-        // Refresh All Views
         function refreshAll() {
             renderDashboard();
             renderOrders();
+            renderProductionSchedule();
             renderExpenses();
         }
 
-        // Initial Load
         window.onload = function() {
-            refreshAll();
+            fetchDataFromSupabase();
         };
     </script>
 </body>
