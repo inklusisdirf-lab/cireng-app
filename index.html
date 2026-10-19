@@ -12,6 +12,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- PWA Manifest & Meta Tags -->
+    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Cireng%20Frozen%20Manager%22%2C%22short_name%22%3A%22CirengApp%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23fffbeb%22%2C%22theme_color%22%3A%22%23d97706%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fcdn-icons-png.flaticon.com%2F512%2F3076%2F3076137.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
+    <meta name="theme-color" content="#d97706">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3076/3076137.png">
+
     <script>
         tailwind.config = {
             theme: {
@@ -52,21 +58,23 @@
                     <p class="text-xs text-gray-500">Cloud Synchronized (Supabase Active)</p>
                 </div>
             </div>
-            <!-- Navigation Tabs -->
-            <nav class="flex bg-gray-100 p-1.5 rounded-2xl gap-1 w-full sm:w-auto overflow-x-auto">
-                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-brand-700 shadow-sm flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-chart-pie"></i> Ringkasan
-                </button>
-                <button onclick="switchTab('orders')" id="btn-orders" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-semibold transition-all text-gray-600 hover:text-gray-900 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-basket-shopping"></i> Pesanan
-                </button>
-                <button onclick="switchTab('production')" id="btn-production" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-semibold transition-all text-gray-600 hover:text-gray-900 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-calendar-days"></i> Jadwal PO & Produksi
-                </button>
-                <button onclick="switchTab('expenses')" id="btn-expenses" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-semibold transition-all text-gray-600 hover:text-gray-900 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-wallet"></i> Pengeluaran
-                </button>
-            </nav>
+            <!-- Navigation Tabs & Install Prompt Button -->
+            <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end overflow-x-auto">
+                <nav class="flex bg-gray-100 p-1.5 rounded-2xl gap-1">
+                    <button onclick="switchTab('dashboard')" id="btn-dashboard" class="px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-brand-700 shadow-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-chart-pie"></i> Ringkasan
+                    </button>
+                    <button onclick="switchTab('orders')" id="btn-orders" class="px-4 py-2 rounded-xl text-xs font-semibold transition-all text-gray-600 hover:text-gray-900 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-basket-shopping"></i> Pesanan
+                    </button>
+                    <button onclick="switchTab('production')" id="btn-production" class="px-4 py-2 rounded-xl text-xs font-semibold transition-all text-gray-600 hover:text-gray-900 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-calendar-days"></i> PO & Produksi
+                    </button>
+                    <button onclick="switchTab('expenses')" id="btn-expenses" class="px-4 py-2 rounded-xl text-xs font-semibold transition-all text-gray-600 hover:text-gray-900 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-wallet"></i> Pengeluaran
+                    </button>
+                </nav>
+            </div>
         </div>
     </header>
 
@@ -74,6 +82,22 @@
 
         <!-- Dashboard Tab -->
         <div id="tab-dashboard" class="tab-content active space-y-6">
+            <!-- Install Banner for Mobile -->
+            <div id="install-banner" class="hidden bg-gradient-to-r from-amber-600 to-brand-600 text-white p-4 rounded-3xl shadow-md flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white/20 p-3 rounded-2xl">
+                        <i class="fa-solid fa-mobile-screen-button text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm">Install Aplikasi ke HP / Tab</h4>
+                        <p class="text-xs text-amber-100">Buka aplikasi lebih cepat layaknya aplikasi Android/iOS.</p>
+                    </div>
+                </div>
+                <button id="btn-install-app" class="bg-white text-brand-700 font-semibold px-4 py-2 rounded-xl text-xs shadow hover:bg-amber-50 transition whitespace-nowrap">
+                    Install Sekarang
+                </button>
+            </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="bg-white p-6 rounded-3xl shadow-sm border border-orange-100 flex items-center justify-between">
                     <div>
@@ -125,7 +149,7 @@
                     <div>
                         <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full font-medium">Cloud Database Active</span>
                         <h2 class="text-xl font-bold mt-3">Catat Pesanan atau Jadwal PO</h2>
-                        <p class="text-amber-100 text-xs mt-1">Atur tanggal produksi dan rekap pesanan otomatis dengan harga standar (Rp 10k / Moza Rp 15k).</p>
+                        <p class="text-amber-100 text-xs mt-1">Harga otomatis (Reguler Rp 10k, Moza Rp 15k, Mix custom).</p>
                     </div>
                     <div class="space-y-2">
                         <button onclick="switchTab('orders'); openOrderModal();" class="w-full bg-white text-brand-700 font-semibold py-3 px-4 rounded-2xl shadow hover:bg-amber-50 transition text-sm flex items-center justify-center gap-2">
@@ -179,7 +203,7 @@
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-orange-100">
                 <div>
                     <h2 class="text-lg font-bold text-gray-900">Jadwal Produksi & Rekap PO Berdasarkan Tanggal</h2>
-                    <p class="text-xs text-gray-500">Pilih tanggal pembuatan pesanan untuk melihat rekap total bungkus per varian yang harus disiapkan.</p>
+                    <p class="text-xs text-gray-500">Pilih tanggal pembuatan pesanan untuk melihat rekap total bungkus per varian.</p>
                 </div>
                 <div class="flex items-center gap-2 w-full sm:w-auto">
                     <label class="text-xs font-semibold text-gray-600 whitespace-nowrap">Pilih Tgl Buat:</label>
@@ -380,6 +404,27 @@
         let orders = [];
         let expenses = [];
 
+        // PWA Install Prompt Handler
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('install-banner').classList.remove('hidden');
+        });
+
+        document.getElementById('btn-install-app').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('install-banner').classList.add('hidden');
+                }
+                deferredPrompt = null;
+            } else {
+                alert('Untuk menginstall:\n- Di HP Android (Chrome): Ketuk menu titik tiga (⋮) di browser lalu pilih "Tambahkan ke Layar Utama" atau "Install Aplikasi".\n- Di iPhone/iPad (Safari): Ketuk tombol Share (ikon panah keluar) lalu pilih "Tambahkan ke Layar Utama".');
+            }
+        });
+
         // Tab Switching Logic
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -390,8 +435,10 @@
 
             document.getElementById('tab-' + tabId).classList.add('active');
             const activeBtn = document.getElementById('btn-' + tabId);
-            activeBtn.classList.remove('text-gray-600');
-            activeBtn.classList.add('bg-white', 'text-brand-700', 'shadow-sm');
+            if(activeBtn) {
+                activeBtn.classList.remove('text-gray-600');
+                activeBtn.classList.add('bg-white', 'text-brand-700', 'shadow-sm');
+            }
 
             if(tabId === 'production') {
                 initProductionDatePicker();
