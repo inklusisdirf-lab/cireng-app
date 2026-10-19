@@ -13,10 +13,10 @@
     <!-- Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- PWA Manifest & Meta Tags with Custom White 3D Cireng Icon -->
-    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Cirsi%20Ibun%20Manager%22%2C%22short_name%22%3A%22CirsiIbun%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23ffffff%22%2C%22theme_color%22%3A%22%23d97706%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fimages.unsplash.com%2Fphoto-1541544741938-0af808871cc0%3Fw%3D512%26auto%3Dformat%26fit%3Dcrop%26q%3D80%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fjpeg%22%7D%5D%7D">
+    <!-- PWA Manifest & Meta Tags with Pure White 3D Cireng Icon -->
+    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Cirsi%20Ibun%20Manager%22%2C%22short_name%22%3A%22CirsiIbun%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23ffffff%22%2C%22theme_color%22%3A%22%23d97706%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Bcharset%3Butf-8%2C%3Csvg%20viewBox%3D%220%200%20200%20200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F200%2Fsvg%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20rx%3D%2245%22%20fill%3D%22%23ffffff%22%2F%3E%3Cpath%20d%3D%22M20%2C110%20C20%2C60%2070%2C30%20110%2C30%20C150%2C30%20180%2C70%20180%2C110%20C180%2C140%20140%2C160%20100%2C160%20C60%2C160%2020%2C140%2020%2C110%20Z%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%23e2e8f0%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20d%3D%22M20%2C110%20C35%2C130%2060%2C150%20100%2C160%20C140%2C150%20165%2C130%20180%2C110%20C165%2C125%20135%2C145%20100%2C145%20C65%2C145%2035%2C125%2020%2C110%20Z%22%20fill%3D%22%23f8fafc%22%20stroke%3D%22%23cbd5e1%22%20stroke-width%3D%222%22%2F%3E%3Ctext%20x%3D%22100%22%20y%3D%2295%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-weight%3D%22800%22%20font-size%3D%2222%22%20fill%3D%22%2392400e%22%20text-anchor%3D%22middle%22%20letter-spacing%3D%222%22%3ECIRSI%3C%2Ftext%3E%3Ctext%20x%3D%22100%22%20y%3D%22118%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-weight%3D%22700%22%20font-size%3D%2213%22%20fill%3D%22%23b45309%22%20text-anchor%3D%22middle%22%20letter-spacing%3D%223%22%3EIBUN%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
     <meta name="theme-color" content="#d97706">
-    <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1541544741938-0af808871cc0?w=192&auto=format&fit=crop&q=80">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%20200%20200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20rx%3D%2245%22%20fill%3D%22%23ffffff%22%2F%3E%3Cpath%20d%3D%22M20%2C110%20C20%2C60%2070%2C30%20110%2C30%20C150%2C30%20180%2C70%20180%2C110%20C180%2C140%20140%2C160%20100%2C160%20C60%2C160%2020%2C140%2020%2C110%20Z%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%23e2e8f0%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20d%3D%22M20%2C110%20C35%2C130%2060%2C150%20100%2C160%20C140%2C150%20165%2C130%20180%2C110%20C165%2C125%20135%2C145%20100%2C145%20C65%2C145%2035%2C125%2020%2C110%20Z%22%20fill%3D%22%23f8fafc%22%20stroke%3D%22%23cbd5e1%22%20stroke-width%3D%222%22%2F%3E%3Ctext%20x%3D%22100%22%20y%3D%2295%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-weight%3D%22800%22%20font-size%3D%2222%22%20fill%3D%22%2392400e%22%20text-anchor%3D%22middle%22%20letter-spacing%3D%222%22%3ECIRSI%3C%2Ftext%3E%3Ctext%20x%3D%22100%22%20y%3D%22118%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-weight%3D%22700%22%20font-size%3D%2213%22%20fill%3D%22%23b45309%22%20text-anchor%3D%22middle%22%20letter-spacing%3D%223%22%3EIBUN%3C%2Ftext%3E%3C%2Fsvg%3E">
 
     <script>
         tailwind.config = {
@@ -43,7 +43,6 @@
         body { font-family: 'Inter', sans-serif; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        /* Splash Screen Animation */
         #splash-screen {
             transition: opacity 0.5s ease, visibility 0.5s ease;
         }
@@ -53,12 +52,9 @@
 
     <div id="splash-screen" class="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center space-y-4">
         <div class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-3xl shadow-2xl overflow-hidden border-4 border-amber-100 bg-white flex items-center justify-center p-2 animate-bounce">
-            <!-- 3D White Cireng / Pastel Logo Representation -->
             <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-md">
                 <path d="M20,110 C20,60 70,30 110,30 C150,30 180,70 180,110 C180,140 140,160 100,160 C60,160 20,140 20,110 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="3"/>
-                <!-- Crimp edges -->
                 <path d="M20,110 C35,130 60,150 100,160 C140,150 165,130 180,110 C165,125 135,145 100,145 C65,145 35,125 20,110 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
-                <!-- Embossed Text CIRSI IBUN -->
                 <text x="100" y="95" font-family="Inter, sans-serif" font-weight="800" font-size="22" fill="#92400e" text-anchor="middle" letter-spacing="2">CIRSI</text>
                 <text x="100" y="118" font-family="Inter, sans-serif" font-weight="700" font-size="13" fill="#b45309" text-anchor="middle" letter-spacing="3">IBUN</text>
             </svg>
@@ -88,7 +84,6 @@
                         <p class="text-[9px] text-emerald-600 font-medium">Supabase Cloud Active</p>
                     </div>
                 </div>
-                <!-- Install Button PWA for Mobile -->
                 <button id="install-btn" onclick="installPWA()" class="hidden bg-brand-50 text-brand-700 border border-brand-200 text-xs px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1">
                     <i class="fa-solid fa-download"></i> Install App
                 </button>
@@ -117,7 +112,6 @@
 
         <!-- TAB DASHBOARD -->
         <div id="tab-dashboard" class="tab-content active space-y-4">
-            <!-- Quick Stats -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
                 <div class="bg-white p-3.5 sm:p-5 rounded-2xl shadow-sm border border-orange-100 flex items-center justify-between">
                     <div>
@@ -157,7 +151,6 @@
                 </div>
             </div>
 
-            <!-- Analytics & Action -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-orange-100 lg:col-span-2 space-y-3">
                     <h2 class="text-sm sm:text-base font-bold text-gray-900 flex items-center gap-2">
@@ -196,11 +189,8 @@
                 </button>
             </div>
 
-            <!-- Compact Orders View for Mobile & Table for Desktop -->
             <div class="bg-white rounded-2xl shadow-sm border border-orange-100 overflow-hidden p-3 sm:p-0">
-                <div id="orders-cards-container" class="space-y-3 sm:hidden">
-                    <!-- Populated for mobile -->
-                </div>
+                <div id="orders-cards-container" class="space-y-3 sm:hidden"></div>
                 <div class="hidden sm:block overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
@@ -236,15 +226,11 @@
                 </div>
             </div>
 
-            <div id="production-summary-box" class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                <!-- Summary counts per variant for selected PO date -->
-            </div>
+            <div id="production-summary-box" class="grid grid-cols-2 sm:grid-cols-5 gap-3"></div>
 
             <div class="bg-white rounded-2xl shadow-sm border border-orange-100 p-4 sm:p-5 space-y-3">
                 <h3 class="text-xs font-bold text-gray-700 uppercase tracking-wider">Daftar Pemesan untuk Tanggal PO Tersebut</h3>
-                <div id="production-orders-list" class="space-y-2">
-                    <!-- Populated by JS -->
-                </div>
+                <div id="production-orders-list" class="space-y-2"></div>
             </div>
         </div>
 
@@ -260,11 +246,8 @@
                 </button>
             </div>
 
-            <!-- Compact Expenses View for Mobile & Table for Desktop -->
             <div class="bg-white rounded-2xl shadow-sm border border-orange-100 overflow-hidden p-3 sm:p-0">
-                <div id="expenses-cards-container" class="space-y-3 sm:hidden">
-                    <!-- Populated for mobile -->
-                </div>
+                <div id="expenses-cards-container" class="space-y-3 sm:hidden"></div>
                 <div class="hidden sm:block overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
@@ -288,7 +271,6 @@
 
     </main>
 
-    <!-- Order Modal -->
     <div id="order-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden">
         <div class="bg-white rounded-2xl max-w-lg w-full p-5 shadow-2xl border border-orange-100 space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-gray-100 pb-3">
@@ -411,7 +393,6 @@
     </div>
 
     <script>
-        // --- SUPABASE CONFIGURATION ---
         const SUPABASE_URL = 'https://rplebtshrhuvbggnxanj.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwbGVidHNocmh1dmJnZ254YW5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzNTk1NDEsImV4cCI6MjEwNzkzNTU0MX0.IxgfOcaZWLk5TgNJP-hVvZvrasp74t6iXqqNc398x1o';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -420,7 +401,6 @@
         let expenses = [];
         let deferredPrompt = null;
 
-        // --- PWA INSTALL SETUP ---
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -438,7 +418,6 @@
             }
         }
 
-        // --- TAB SWITCHING ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('nav button').forEach(btn => {
@@ -458,7 +437,6 @@
             }
         }
 
-        // --- TOAST NOTIFICATION ---
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             const msg = document.getElementById('toast-message');
@@ -481,7 +459,6 @@
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount);
         }
 
-        // --- FETCH DATA FROM SUPABASE ---
         async function fetchSupabaseData() {
             try {
                 const { data: ordData, error: ordErr } = await supabaseClient.from('orders').select('*');
@@ -512,7 +489,6 @@
             } catch (err) {
                 console.error("Gagal sinkronisasi Supabase:", err);
             } finally {
-                // Hide Splash Screen smoothly after loading
                 const splash = document.getElementById('splash-screen');
                 if(splash) {
                     splash.style.opacity = '0';
@@ -521,7 +497,6 @@
             }
         }
 
-        // --- AUTOMATIC PRICE CALCULATOR ---
         function calculateOrderTotal() {
             const pAyamPedas = parseInt(document.getElementById('var-ayam-pedas').value) || 0;
             const pAyamOrig = parseInt(document.getElementById('var-ayam-original').value) || 0;
@@ -529,7 +504,6 @@
             const pMoza = parseInt(document.getElementById('var-moza').value) || 0;
             const pMix = parseInt(document.getElementById('var-mix').value) || 0;
 
-            // Harga: Reguler/Mix/Keju = 10.000, Moza = 15.000
             const regularCount = pAyamPedas + pAyamOrig + pKeju + pMix;
             const mozaCount = pMoza;
 
@@ -537,7 +511,6 @@
             document.getElementById('order-total').value = calculatedTotal;
         }
 
-        // --- DASHBOARD & ANALYTICS ---
         function renderDashboard() {
             let totalRevenue = orders.reduce((sum, o) => sum + Number(o.total), 0);
             let totalExpenses = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
@@ -592,7 +565,6 @@
             }
         }
 
-        // --- RENDER ORDERS (COMPACT CARDS & TABLE) ---
         function renderOrders() {
             const tbody = document.getElementById('orders-table-body');
             const cardsContainer = document.getElementById('orders-cards-container');
@@ -630,7 +602,6 @@
                 if(o.status === 'Lunas') statusColor = 'bg-blue-50 text-blue-700 border border-blue-200';
                 if(o.status === 'Selesai') statusColor = 'bg-emerald-50 text-emerald-700 border border-emerald-200';
 
-                // Desktop Table Row
                 tbody.innerHTML += `
                     <tr class="hover:bg-gray-50/50 transition">
                         <td class="py-3 px-4">
@@ -650,7 +621,6 @@
                     </tr>
                 `;
 
-                // Mobile Compact Card
                 cardsContainer.innerHTML += `
                     <div class="bg-gray-50/80 p-3.5 rounded-xl border border-orange-100 space-y-2">
                         <div class="flex justify-between items-start">
@@ -675,7 +645,6 @@
             });
         }
 
-        // --- RENDER PRODUCTION / PO SCHEDULE ---
         function renderProduction() {
             const dateInput = document.getElementById('po-filter-date');
             if(!dateInput.value) {
@@ -685,7 +654,6 @@
             const selectedDate = dateInput.value;
             const filteredOrders = orders.filter(o => o.productionDate === selectedDate);
 
-            // Calculate variant totals for this PO date
             let counts = { 'Ayam Pedas': 0, 'Ayam Original': 0, 'Keju': 0, 'Moza': 0, 'Mix': 0 };
             filteredOrders.forEach(o => {
                 if(o.variants) {
@@ -746,7 +714,6 @@
             });
         }
 
-        // --- RENDER EXPENSES ---
         function renderExpenses() {
             const tbody = document.getElementById('expenses-table-body');
             const cardsContainer = document.getElementById('expenses-cards-container');
@@ -798,7 +765,6 @@
             });
         }
 
-        // --- MODAL CONTROLS ---
         function toggleMixDetail() {
             const mixVal = parseInt(document.getElementById('var-mix').value) || 0;
             const mixBox = document.getElementById('mix-detail-box');
@@ -866,7 +832,6 @@
             document.getElementById('expense-modal').classList.add('hidden');
         }
 
-        // --- DATABASE MUTATIONS (SUPABASE) ---
         async function saveOrder(e) {
             e.preventDefault();
             const id = document.getElementById('order-id').value;
@@ -988,7 +953,6 @@
             renderProduction();
         }
 
-        // Initial Load
         window.onload = function() {
             fetchSupabaseData();
         };
