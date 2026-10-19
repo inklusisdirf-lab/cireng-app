@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Usaha Cireng Frozen</title>
+    <!-- Tailwind CSS for modern, eye-catching UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                            800: '#92400e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-100 min-h-screen text-gray-800">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50 border-b border-orange-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-brand-600 to-amber-500 text-white p-3 rounded-2xl shadow-md">
+                    <i class="fa-solid fa-fire-flame-curved text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-gray-900 tracking-tight">Cireng Frozen Manager</h1>
+                    <p class="text-xs text-gray-500">Pencatatan Pesanan & Keuangan Praktis</p>
+                </div>
+            </div>
+            <!-- Navigation Tabs -->
+            <nav class="flex bg-gray-100 p-1.5 rounded-2xl gap-1 w-full sm:w-auto overflow-x-auto">
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-brand-700 shadow-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-chart-pie"></i> Ringkasan
+                </button>
+                <button onclick="switchTab('orders')" id="btn-orders" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-semibold transition-all text-gray-600 hover:text-gray-900 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-basket-shopping"></i> Pesanan
+                </button>
+                <button onclick="switchTab('expenses')" id="btn-expenses" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-semibold transition-all text-gray-600 hover:text-gray-900 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-wallet"></i> Pengeluaran
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <div id="tab-dashboard" class="tab-content active space-y-6">
+            <!-- Quick Stats Banner -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-orange-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Total Pendapatan</p>
+                        <h3 id="stat-revenue" class="text-2xl font-bold text-gray-900 mt-1">Rp 0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-orange-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Total Pengeluaran</p>
+                        <h3 id="stat-expenses" class="text-2xl font-bold text-gray-900 mt-1">Rp 0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-arrow-trend-down"></i>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-orange-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Keuntungan Bersih</p>
+                        <h3 id="stat-profit" class="text-2xl font-bold text-emerald-600 mt-1">Rp 0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-orange-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Jumlah Pesanan</p>
+                        <h3 id="stat-orders-count" class="text-2xl font-bold text-gray-900 mt-1">0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics & Quick Action Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Varian Terlaris Breakdown -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-orange-100 lg:col-span-2 space-y-4">
+                    <h2 class="text-base font-bold text-gray-900 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-bar text-brand-600"></i> Statistik Penjualan Varian Cireng
+                    </h2>
+                    <div id="variant-stats-container" class="space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Quick Action Card -->
+                <div class="bg-gradient-to-br from-brand-600 to-amber-600 text-white p-6 rounded-3xl shadow-lg flex flex-col justify-between space-y-6">
+                    <div>
+                        <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full font-medium">Praktis & Cepat</span>
+                        <h2 class="text-xl font-bold mt-3">Catat Pesanan atau Pengeluaran Baru</h2>
+                        <p class="text-amber-100 text-xs mt-1">Kelola transaksi harian usahamu langsung dari satu tempat.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <button onclick="switchTab('orders'); openOrderModal();" class="w-full bg-white text-brand-700 font-semibold py-3 px-4 rounded-2xl shadow hover:bg-amber-50 transition text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus-circle"></i> Tambah Pesanan Baru
+                        </button>
+                        <button onclick="switchTab('expenses'); openExpenseModal();" class="w-full bg-brand-700 text-white border border-brand-500 font-semibold py-3 px-4 rounded-2xl shadow hover:bg-brand-800 transition text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-minus-circle"></i> Tambah Pengeluaran
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-orders" class="tab-content space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-orange-100">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-900">Daftar Pesanan Pelanggan</h2>
+                    <p class="text-xs text-gray-500">Kelola pesanan cireng frozen masuk beserta varian rasanya.</p>
+                </div>
+                <button onclick="openOrderModal()" class="bg-brand-600 hover:bg-brand-700 text-white font-semibold px-5 py-3 rounded-2xl shadow transition text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Tambah Pesanan
+                </button>
+            </div>
+
+            <!-- Orders Table Container -->
+            <div class="bg-white rounded-3xl shadow-sm border border-orange-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-400 text-xs uppercase tracking-wider border-b border-gray-100">
+                                <th class="py-4 px-6 font-semibold">Tanggal & Nama</th>
+                                <th class="py-4 px-6 font-semibold">Kontak</th>
+                                <th class="py-4 px-6 font-semibold">Detail Varian & Jumlah</th>
+                                <th class="py-4 px-6 font-semibold">Total Harga</th>
+                                <th class="py-4 px-6 font-semibold">Status</th>
+                                <th class="py-4 px-6 font-semibold text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table-body" class="divide-y divide-gray-100 text-sm">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="orders-empty" class="hidden text-center py-12 text-gray-400">
+                    <i class="fa-solid fa-basket-shopping text-4xl mb-3 text-gray-300"></i>
+                    <p class="text-sm">Belum ada data pesanan.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-expenses" class="tab-content space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-orange-100">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-900">Catatan Pengeluaran Usaha</h2>
+                    <p class="text-xs text-gray-500">Catat modal bahan baku, kemasan, operasional, dll.</p>
+                </div>
+                <button onclick="openExpenseModal()" class="bg-brand-600 hover:bg-brand-700 text-white font-semibold px-5 py-3 rounded-2xl shadow transition text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Tambah Pengeluaran
+                </button>
+            </div>
+
+            <!-- Expenses Table Container -->
+            <div class="bg-white rounded-3xl shadow-sm border border-orange-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-400 text-xs uppercase tracking-wider border-b border-gray-100">
+                                <th class="py-4 px-6 font-semibold">Tanggal</th>
+                                <th class="py-4 px-6 font-semibold">Keterangan / Keperluan</th>
+                                <th class="py-4 px-6 font-semibold">Kategori</th>
+                                <th class="py-4 px-6 font-semibold">Nominal</th>
+                                <th class="py-4 px-6 font-semibold text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expenses-table-body" class="divide-y divide-gray-100 text-sm">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="expenses-empty" class="hidden text-center py-12 text-gray-400">
+                    <i class="fa-solid fa-wallet text-4xl mb-3 text-gray-300"></i>
+                    <p class="text-sm">Belum ada data pengeluaran.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Order Modal -->
+    <div id="order-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-orange-100 space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-gray-100 pb-4">
+                <h3 id="order-modal-title" class="text-lg font-bold text-gray-900">Tambah Pesanan Baru</h3>
+                <button onclick="closeOrderModal()" class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form id="order-form" onsubmit="saveOrder(event)" class="space-y-4">
+                <input type="hidden" id="order-id">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Nama Pemesan</label>
+                        <input type="text" id="order-name" required placeholder="Cth: Ibu Siti" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-brand-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">No. WhatsApp / Kontak</label>
+                        <input type="text" id="order-phone" placeholder="Cth: 08123456789" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-brand-500">
+                    </div>
+                </div>
+
+                <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 space-y-3">
+                    <label class="block text-xs font-bold text-amber-900 uppercase tracking-wider">Jumlah Pesanan per Varian (Paket/Bungkus)</label>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100">
+                            <span class="text-xs font-medium text-gray-700">Ayam Pedas</span>
+                            <input type="number" min="0" value="0" id="var-ayam-pedas" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
+                        </div>
+                        <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100">
+                            <span class="text-xs font-medium text-gray-700">Ayam Original</span>
+                            <input type="number" min="0" value="0" id="var-ayam-original" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
+                        </div>
+                        <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100">
+                            <span class="text-xs font-medium text-gray-700">Keju</span>
+                            <input type="number" min="0" value="0" id="var-keju" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
+                        </div>
+                        <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100">
+                            <span class="text-xs font-medium text-gray-700">Moza (Mozzarella)</span>
+                            <input type="number" min="0" value="0" id="var-moza" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
+                        </div>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border border-gray-100 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-medium text-gray-700">Mix 2 Rasa</span>
+                            <input type="number" min="0" value="0" id="var-mix" onchange="toggleMixDetail()" class="w-20 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-sm font-semibold focus:outline-none focus:border-brand-500">
+                        </div>
+                        <div id="mix-detail-box" class="hidden pt-2 border-t border-gray-100">
+                            <label class="block text-[11px] text-gray-500 mb-1">Sebutkan 2 rasa yang dicampur untuk pesanan mix:</label>
+                            <input type="text" id="order-mix-note" placeholder="Cth: Ayam Pedas + Keju" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-brand-500">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Total Harga (Rp)</label>
+                        <input type="number" id="order-total" required placeholder="Cth: 75000" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-brand-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Status Pembayaran / Pesanan</label>
+                        <select id="order-status" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-brand-500">
+                            <option value="Pending">Pending / Belum Lunas</option>
+                            <option value="Lunas">Lunas / Diproses</option>
+                            <option value="Selesai">Selesai / Dikirim</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                    <button type="button" onclick="closeOrderModal()" class="px-5 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-medium text-sm hover:bg-gray-50 transition">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-medium text-sm shadow transition">Simpan Pesanan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Expense Modal -->
+    <div id="expense-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-orange-100 space-y-6">
+            <div class="flex justify-between items-center border-b border-gray-100 pb-4">
+                <h3 id="expense-modal-title" class="text-lg font-bold text-gray-900">Tambah Pengeluaran</h3>
+                <button onclick="closeExpenseModal()" class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form id="expense-form" onsubmit="saveExpense(event)" class="space-y-4">
+                <input type="hidden" id="expense-id">
+                <div>
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Keterangan / Keperluan</label>
+                    <input type="text" id="expense-desc" required placeholder="Cth: Beli Tepung Tapioka & Ayam 1kg" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Kategori Pengeluaran</label>
+                    <select id="expense-category" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-brand-500">
+                        <option value="Bahan Baku">Bahan Baku (Tapioka, Ayam, Bumbu)</option>
+                        <option value="Kemasan">Kemasan & Plastik Vacuum</option>
+                        <option value="Operasional">Operasional (Gas, Listrik, Transport)</option>
+                        <option value="Lainnya">Lain-lain</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Nominal (Rp)</label>
+                    <input type="number" id="expense-amount" required placeholder="Cth: 50000" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-brand-500">
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                    <button type="button" onclick="closeExpenseModal()" class="px-5 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-medium text-sm hover:bg-gray-50 transition">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-medium text-sm shadow transition">Simpan Pengeluaran</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Notification Toast / Modal instead of alert() -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-gray-900 text-white px-5 py-3 rounded-2xl shadow-xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 text-sm font-medium flex items-center gap-3">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toast-message">Berhasil menyimpan data!</span>
+    </div>
+
+    <script>
+        // State Management stored in localStorage for seamless single-session / cross-session usage
+        let orders = JSON.parse(localStorage.getItem('cireng_orders')) || [
+            {
+                id: '1',
+                name: 'Bpk. Budi',
+                phone: '081298765432',
+                variants: { 'Ayam Pedas': 2, 'Keju': 1, 'Ayam Original': 0, 'Moza': 0, 'Mix': 0 },
+                mixNote: '',
+                total: 75000,
+                status: 'Lunas',
+                date: '2026-10-19'
+            }
+        ];
+
+        let expenses = JSON.parse(localStorage.getItem('cireng_expenses')) || [
+            {
+                id: '1',
+                desc: 'Beli Tepung Tapioka & Ayam 2kg',
+                category: 'Bahan Baku',
+                amount: 85000,
+                date: '2026-10-18'
+            }
+        ];
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-brand-700', 'shadow-sm');
+                btn.classList.add('text-gray-600');
+            });
+
+            document.getElementById('tab-' + tabId).classList.add('active');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('text-gray-600');
+            activeBtn.classList.add('bg-white', 'text-brand-700', 'shadow-sm');
+        }
+
+        // Show Custom Toast Notification (No alert() used!)
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toast-message');
+            const icon = document.getElementById('toast-icon');
+
+            msg.innerText = message;
+            if (type === 'success') {
+                icon.className = 'fa-solid fa-circle-check text-emerald-400';
+            } else {
+                icon.className = 'fa-solid fa-circle-exclamation text-amber-400';
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Format Currency Helper
+        function formatRupiah(amount) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount);
+        }
+
+        // Render Dashboard & Summaries
+        function renderDashboard() {
+            let totalRevenue = orders.reduce((sum, o) => sum + Number(o.total), 0);
+            let totalExpenses = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+            let netProfit = totalRevenue - totalExpenses;
+
+            document.getElementById('stat-revenue').innerText = formatRupiah(totalRevenue);
+            document.getElementById('stat-expenses').innerText = formatRupiah(totalExpenses);
+            
+            const profitEl = document.getElementById('stat-profit');
+            profitEl.innerText = formatRupiah(netProfit);
+            profitEl.className = netProfit >= 0 ? 'text-2xl font-bold text-emerald-600 mt-1' : 'text-2xl font-bold text-rose-600 mt-1';
+            
+            document.getElementById('stat-orders-count').innerText = orders.length;
+
+            // Calculate Varian Totals
+            let variantCounts = { 'Ayam Pedas': 0, 'Ayam Original': 0, 'Keju': 0, 'Moza': 0, 'Mix': 0 };
+            orders.forEach(o => {
+                if(o.variants) {
+                    for(let k in o.variants) {
+                        variantCounts[k] = (variantCounts[k] || 0) + Number(o.variants[k]);
+                    }
+                }
+            });
+
+            let totalPacks = Object.values(variantCounts).reduce((a, b) => a + b, 0) || 1; // avoid div by zero
+
+            const variantContainer = document.getElementById('variant-stats-container');
+            variantContainer.innerHTML = '';
+
+            const variantColors = {
+                'Ayam Pedas': 'bg-rose-500',
+                'Ayam Original': 'bg-amber-500',
+                'Keju': 'bg-yellow-400',
+                'Moza': 'bg-purple-500',
+                'Mix': 'bg-emerald-500'
+            };
+
+            for(let v in variantCounts) {
+                let count = variantCounts[v];
+                let percentage = Math.round((count / totalPacks) * 100);
+
+                variantContainer.innerHTML += `
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs font-semibold">
+                            <span class="text-gray-700">${v}</span>
+                            <span class="text-gray-500">${count} bungkus (${percentage}%)</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="${variantColors[v] || 'bg-brand-500'} h-2.5 rounded-full transition-all duration-500" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Render Orders Table
+        function renderOrders() {
+            const tbody = document.getElementById('orders-table-body');
+            const emptyState = document.getElementById('orders-empty');
+            tbody.innerHTML = '';
+
+            if(orders.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            emptyState.classList.add('hidden');
+
+            // Sort descending by date
+            const sortedOrders = [...orders].reverse();
+
+            sortedOrders.forEach(o => {
+                let variantBadges = '';
+                if(o.variants) {
+                    for(let v in o.variants) {
+                        if(o.variants[v] > 0) {
+                            variantBadges += `<span class="inline-block bg-orange-50 text-brand-700 text-[11px] font-medium px-2 py-0.5 rounded-lg mr-1 mb-1">${v}: ${o.variants[v]}</span>`;
+                        }
+                    }
+                }
+                if(o.mixNote) {
+                    variantBadges += `<div class="text-[11px] text-gray-400 italic">Mix: ${o.mixNote}</div>`;
+                }
+
+                let statusBadgeColor = 'bg-amber-50 text-amber-700 border border-amber-200';
+                if(o.status === 'Lunas') statusBadgeColor = 'bg-blue-50 text-blue-700 border border-blue-200';
+                if(o.status === 'Selesai') statusBadgeColor = 'bg-emerald-50 text-emerald-700 border border-emerald-200';
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50/50 transition">
+                        <td class="py-4 px-6">
+                            <div class="font-bold text-gray-900">${o.name}</div>
+                            <div class="text-xs text-gray-400">${o.date}</div>
+                        </td>
+                        <td class="py-4 px-6 text-gray-600 text-xs">${o.phone || '-'}</td>
+                        <td class="py-4 px-6 max-w-xs">${variantBadges}</td>
+                        <td class="py-4 px-6 font-semibold text-gray-900">${formatRupiah(o.total)}</td>
+                        <td class="py-4 px-6">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusBadgeColor}">${o.status}</span>
+                        </td>
+                        <td class="py-4 px-6 text-center">
+                            <button onclick="editOrder('${o.id}')" class="text-gray-400 hover:text-brand-600 p-1.5 transition"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="deleteOrder('${o.id}')" class="text-gray-400 hover:text-rose-600 p-1.5 transition ml-2"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Render Expenses Table
+        function renderExpenses() {
+            const tbody = document.getElementById('expenses-table-body');
+            const emptyState = document.getElementById('expenses-empty');
+            tbody.innerHTML = '';
+
+            if(expenses.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            emptyState.classList.add('hidden');
+
+            const sortedExpenses = [...expenses].reverse();
+
+            sortedExpenses.forEach(e => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50/50 transition">
+                        <td class="py-4 px-6 text-xs text-gray-500">${e.date}</td>
+                        <td class="py-4 px-6 font-medium text-gray-900">${e.desc}</td>
+                        <td class="py-4 px-6">
+                            <span class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full font-medium">${e.category}</span>
+                        </td>
+                        <td class="py-4 px-6 font-semibold text-rose-600">-${formatRupiah(e.amount)}</td>
+                        <td class="py-4 px-6 text-center">
+                            <button onclick="editExpense('${e.id}')" class="text-gray-400 hover:text-brand-600 p-1.5 transition"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="deleteExpense('${e.id}')" class="text-gray-400 hover:text-rose-600 p-1.5 transition ml-2"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Modal Controls
+        function toggleMixDetail() {
+            const mixVal = parseInt(document.getElementById('var-mix').value) || 0;
+            const mixBox = document.getElementById('mix-detail-box');
+            if(mixVal > 0) {
+                mixBox.classList.remove('hidden');
+            } else {
+                mixBox.classList.add('hidden');
+            }
+        }
+
+        function openOrderModal(id = null) {
+            document.getElementById('order-modal').classList.remove('hidden');
+            if(id) {
+                document.getElementById('order-modal-title').innerText = 'Edit Pesanan';
+                const o = orders.find(item => item.id === id);
+                if(o) {
+                    document.getElementById('order-id').value = o.id;
+                    document.getElementById('order-name').value = o.name;
+                    document.getElementById('order-phone').value = o.phone || '';
+                    document.getElementById('var-ayam-pedas').value = o.variants['Ayam Pedas'] || 0;
+                    document.getElementById('var-ayam-original').value = o.variants['Ayam Original'] || 0;
+                    document.getElementById('var-keju').value = o.variants['Keju'] || 0;
+                    document.getElementById('var-moza').value = o.variants['Moza'] || 0;
+                    document.getElementById('var-mix').value = o.variants['Mix'] || 0;
+                    document.getElementById('order-mix-note').value = o.mixNote || '';
+                    document.getElementById('order-total').value = o.total;
+                    document.getElementById('order-status').value = o.status;
+                    toggleMixDetail();
+                }
+            } else {
+                document.getElementById('order-modal-title').innerText = 'Tambah Pesanan Baru';
+                document.getElementById('order-form').reset();
+                document.getElementById('order-id').value = '';
+                toggleMixDetail();
+            }
+        }
+
+        function closeOrderModal() {
+            document.getElementById('order-modal').classList.add('hidden');
+        }
+
+        function openExpenseModal(id = null) {
+            document.getElementById('expense-modal').classList.remove('hidden');
+            if(id) {
+                document.getElementById('expense-modal-title').innerText = 'Edit Pengeluaran';
+                const e = expenses.find(item => item.id === id);
+                if(e) {
+                    document.getElementById('expense-id').value = e.id;
+                    document.getElementById('expense-desc').value = e.desc;
+                    document.getElementById('expense-category').value = e.category;
+                    document.getElementById('expense-amount').value = e.amount;
+                }
+            } else {
+                document.getElementById('expense-modal-title').innerText = 'Tambah Pengeluaran';
+                document.getElementById('expense-form').reset();
+                document.getElementById('expense-id').value = '';
+            }
+        }
+
+        function closeExpenseModal() {
+            document.getElementById('expense-modal').classList.add('hidden');
+        }
+
+        // Save / Update Order
+        function saveOrder(e) {
+            e.preventDefault();
+            const id = document.getElementById('order-id').value;
+            const name = document.getElementById('order-name').value;
+            const phone = document.getElementById('order-phone').value;
+            const variants = {
+                'Ayam Pedas': parseInt(document.getElementById('var-ayam-pedas').value) || 0,
+                'Ayam Original': parseInt(document.getElementById('var-ayam-original').value) || 0,
+                'Keju': parseInt(document.getElementById('var-keju').value) || 0,
+                'Moza': parseInt(document.getElementById('var-moza').value) || 0,
+                'Mix': parseInt(document.getElementById('var-mix').value) || 0,
+            };
+            const mixNote = document.getElementById('order-mix-note').value;
+            const total = parseFloat(document.getElementById('order-total').value) || 0;
+            const status = document.getElementById('order-status').value;
+            const today = new Date().toISOString().split('T')[0];
+
+            if(id) {
+                orders = orders.map(o => o.id === id ? { ...o, name, phone, variants, mixNote, total, status } : o);
+                showToast('Pesanan berhasil diperbarui!');
+            } else {
+                const newOrder = {
+                    id: Date.now().toString(),
+                    name, phone, variants, mixNote, total, status, date: today
+                };
+                orders.push(newOrder);
+                showToast('Pesanan baru berhasil ditambahkan!');
+            }
+
+            localStorage.setItem('cireng_orders', JSON.stringify(orders));
+            closeOrderModal();
+            refreshAll();
+        }
+
+        function editOrder(id) {
+            openOrderModal(id);
+        }
+
+        function deleteOrder(id) {
+            if(confirm('Hapus pesanan ini?')) {
+                orders = orders.filter(o => o.id !== id);
+                localStorage.setItem('cireng_orders', JSON.stringify(orders));
+                showToast('Pesanan berhasil dihapus.', 'warn');
+                refreshAll();
+            }
+        }
+
+        // Save / Update Expense
+        function saveExpense(e) {
+            e.preventDefault();
+            const id = document.getElementById('expense-id').value;
+            const desc = document.getElementById('expense-desc').value;
+            const category = document.getElementById('expense-category').value;
+            const amount = parseFloat(document.getElementById('expense-amount').value) || 0;
+            const today = new Date().toISOString().split('T')[0];
+
+            if(id) {
+                expenses = expenses.map(ex => ex.id === id ? { ...ex, desc, category, amount } : ex);
+                showToast('Pengeluaran berhasil diperbarui!');
+            } else {
+                const newExpense = {
+                    id: Date.now().toString(),
+                    desc, category, amount, date: today
+                };
+                expenses.push(newExpense);
+                showToast('Pengeluaran baru berhasil ditambahkan!');
+            }
+
+            localStorage.setItem('cireng_expenses', JSON.stringify(expenses));
+            closeExpenseModal();
+            refreshAll();
+        }
+
+        function editExpense(id) {
+            openExpenseModal(id);
+        }
+
+        function deleteExpense(id) {
+            if(confirm('Hapus catatan pengeluaran ini?')) {
+                expenses = expenses.filter(e => e.id !== id);
+                localStorage.setItem('cireng_expenses', JSON.stringify(expenses));
+                showToast('Pengeluaran berhasil dihapus.', 'warn');
+                refreshAll();
+            }
+        }
+
+        // Refresh All Views
+        function refreshAll() {
+            renderDashboard();
+            renderOrders();
+            renderExpenses();
+        }
+
+        // Initial Load
+        window.onload = function() {
+            refreshAll();
+        };
+    </script>
+</body>
+</html>
