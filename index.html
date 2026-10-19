@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cireng Frozen Manager</title>
+    <title>Cirsi Ibun - Cireng Frozen Manager</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts Inter -->
@@ -13,10 +13,10 @@
     <!-- Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- PWA Manifest & Meta Tags -->
-    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Cireng%20Frozen%20Manager%22%2C%22short_name%22%3A%22CirengApp%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23fffbeb%22%2C%22theme_color%22%3A%22%23d97706%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fcdn-icons-png.flaticon.com%2F512%2F3076%2F3076137.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
+    <!-- PWA Manifest & Meta Tags with Custom White 3D Cireng Icon -->
+    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Cirsi%20Ibun%20Manager%22%2C%22short_name%22%3A%22CirsiIbun%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23ffffff%22%2C%22theme_color%22%3A%22%23d97706%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fimages.unsplash.com%2Fphoto-1541544741938-0af808871cc0%3Fw%3D512%26auto%3Dformat%26fit%3Dcrop%26q%3D80%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fjpeg%22%7D%5D%7D">
     <meta name="theme-color" content="#d97706">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3076/3076137.png">
+    <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1541544741938-0af808871cc0?w=192&auto=format&fit=crop&q=80">
 
     <script>
         tailwind.config = {
@@ -43,20 +43,48 @@
         body { font-family: 'Inter', sans-serif; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+        /* Splash Screen Animation */
+        #splash-screen {
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-100 min-h-screen text-gray-800 pb-16">
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-100 min-h-screen text-gray-800 pb-20">
 
-    <!-- Header Compact -->
-    <header class="bg-white shadow-sm sticky top-0 z-50 border-b border-orange-100">
+    <div id="splash-screen" class="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center space-y-4">
+        <div class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-3xl shadow-2xl overflow-hidden border-4 border-amber-100 bg-white flex items-center justify-center p-2 animate-bounce">
+            <!-- 3D White Cireng / Pastel Logo Representation -->
+            <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-md">
+                <path d="M20,110 C20,60 70,30 110,30 C150,30 180,70 180,110 C180,140 140,160 100,160 C60,160 20,140 20,110 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="3"/>
+                <!-- Crimp edges -->
+                <path d="M20,110 C35,130 60,150 100,160 C140,150 165,130 180,110 C165,125 135,145 100,145 C65,145 35,125 20,110 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+                <!-- Embossed Text CIRSI IBUN -->
+                <text x="100" y="95" font-family="Inter, sans-serif" font-weight="800" font-size="22" fill="#92400e" text-anchor="middle" letter-spacing="2">CIRSI</text>
+                <text x="100" y="118" font-family="Inter, sans-serif" font-weight="700" font-size="13" fill="#b45309" text-anchor="middle" letter-spacing="3">IBUN</text>
+            </svg>
+        </div>
+        <div class="text-center space-y-1">
+            <h2 class="text-lg font-bold text-gray-900 tracking-tight">Cirsi Ibun</h2>
+            <p class="text-xs text-brand-600 font-medium">Memuat Aplikasi Cireng Frozen...</p>
+        </div>
+        <div class="w-32 h-1 bg-gray-100 rounded-full overflow-hidden">
+            <div class="bg-brand-600 h-full w-full animate-pulse"></div>
+        </div>
+    </div>
+
+    <header class="bg-white shadow-sm sticky top-0 z-40 border-b border-orange-100">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 flex flex-col sm:flex-row justify-between items-center gap-2">
-            <div class="flex items-center space-x-2 w-full sm:w-auto justify-between">
-                <div class="flex items-center space-x-2">
-                    <div class="bg-gradient-to-tr from-brand-600 to-amber-500 text-white p-2 rounded-xl shadow-md">
-                        <i class="fa-solid fa-fire-flame-curved text-sm"></i>
+            <div class="flex items-center space-x-2.5 w-full sm:w-auto justify-between">
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white shadow-md border border-orange-100 flex items-center justify-center overflow-hidden p-1">
+                        <svg viewBox="0 0 200 200" class="w-full h-full">
+                            <path d="M20,110 C20,60 70,30 110,30 C150,30 180,70 180,110 C180,140 140,160 100,160 C60,160 20,140 20,110 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="3"/>
+                            <path d="M20,110 C35,130 60,150 100,160 C140,150 165,130 180,110 C165,125 135,145 100,145 C65,145 35,125 20,110 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+                            <text x="100" y="98" font-family="Inter, sans-serif" font-weight="800" font-size="24" fill="#92400e" text-anchor="middle" letter-spacing="1">CIRSI</text>
+                        </svg>
                     </div>
                     <div>
-                        <h1 class="text-sm sm:text-base font-bold text-gray-900 tracking-tight leading-snug">Cireng Frozen</h1>
+                        <h1 class="text-sm sm:text-base font-bold text-gray-900 tracking-tight leading-snug">Cirsi Ibun</h1>
                         <p class="text-[9px] text-emerald-600 font-medium">Supabase Cloud Active</p>
                     </div>
                 </div>
@@ -161,7 +189,7 @@
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-orange-100">
                 <div>
                     <h2 class="text-sm sm:text-base font-bold text-gray-900">Daftar Pesanan Pelanggan</h2>
-                    <p class="text-[11px] text-gray-500">Otomatis hitung Rp 10rb (Reguler) & Rp 15rb (Moza).</p>
+                    <p class="text-[11px] text-gray-500">Reguler/Mix/Keju Rp 10rb | Moza Rp 15rb.</p>
                 </div>
                 <button onclick="openOrderModal()" class="w-full sm:w-auto bg-brand-600 hover:bg-brand-700 text-white font-semibold px-4 py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
                     <i class="fa-solid fa-plus"></i> Tambah Pesanan
@@ -483,6 +511,13 @@
                 refreshAll();
             } catch (err) {
                 console.error("Gagal sinkronisasi Supabase:", err);
+            } finally {
+                // Hide Splash Screen smoothly after loading
+                const splash = document.getElementById('splash-screen');
+                if(splash) {
+                    splash.style.opacity = '0';
+                    setTimeout(() => splash.style.visibility = 'hidden', 500);
+                }
             }
         }
 
