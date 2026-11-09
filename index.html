@@ -225,7 +225,7 @@
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-orange-100">
                 <div>
                     <h2 class="text-sm sm:text-base font-bold text-gray-900">Daftar Pesanan Pelanggan</h2>
-                    <p class="text-[11px] text-gray-500">Reguler/Mix/Keju Rp 10rb | Moza Rp 15rb.</p>
+                    <p class="text-[11px] text-gray-500">Reguler/Mix/Keju/Usus Pedas Rp 10rb | Moza Rp 15rb.</p>
                 </div>
                 <button onclick="openOrderModal()" class="w-full sm:w-auto bg-brand-600 hover:bg-brand-700 text-white font-semibold px-4 py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
                     <i class="fa-solid fa-plus"></i> Tambah Pesanan
@@ -261,7 +261,7 @@
             <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-orange-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 <div>
                     <h2 class="text-sm sm:text-base font-bold text-gray-900">Jadwal Produksi Berdasarkan Tanggal PO</h2>
-                    <p class="text-[11px] text-gray-500">Kelompokkan rekapitulasi cireng yang harus dibuat pada tanggal tertentu.</p>
+                    <p class="text-[11px] text-gray-500">Kelompokkan rekapitulasi cireng dan usus pedas yang harus dibuat pada tanggal tertentu.</p>
                 </div>
                 <div class="flex items-center gap-2 w-full sm:w-auto">
                     <label class="text-xs font-semibold text-gray-600 whitespace-nowrap">Pilih Tgl PO:</label>
@@ -269,7 +269,7 @@
                 </div>
             </div>
 
-            <div id="production-summary-box" class="grid grid-cols-2 sm:grid-cols-5 gap-3"></div>
+            <div id="production-summary-box" class="grid grid-cols-2 sm:grid-cols-6 gap-3"></div>
 
             <div class="bg-white rounded-2xl shadow-sm border border-orange-100 p-4 sm:p-5 space-y-3">
                 <h3 class="text-xs font-bold text-gray-700 uppercase tracking-wider">Daftar Pemesan untuk Tanggal PO Tersebut</h3>
@@ -356,6 +356,10 @@
                             <input type="number" min="0" value="0" id="var-keju" onchange="calculateOrderTotal()" class="w-16 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-xs font-semibold focus:outline-none focus:border-brand-500">
                         </div>
                         <div class="flex items-center justify-between bg-white p-2.5 rounded-lg border border-gray-100">
+                            <span class="text-xs text-gray-700">Usus Pedas <span class="text-[10px] text-gray-400">(Rp 10k)</span></span>
+                            <input type="number" min="0" value="0" id="var-usus-pedas" onchange="calculateOrderTotal()" class="w-16 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-xs font-semibold focus:outline-none focus:border-brand-500">
+                        </div>
+                        <div class="flex items-center justify-between bg-white p-2.5 rounded-lg border border-gray-100">
                             <span class="text-xs text-gray-700">Moza <span class="text-[10px] text-amber-600 font-bold">(Rp 15k)</span></span>
                             <input type="number" min="0" value="0" id="var-moza" onchange="calculateOrderTotal()" class="w-16 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-xs font-semibold focus:outline-none focus:border-brand-500">
                         </div>
@@ -366,7 +370,7 @@
                             <input type="number" min="0" value="0" id="var-mix" onchange="toggleMixDetail(); calculateOrderTotal();" class="w-16 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-xs font-semibold focus:outline-none focus:border-brand-500">
                         </div>
                         <div id="mix-detail-box" class="hidden pt-1.5 border-t border-gray-100">
-                            <input type="text" id="order-mix-note" placeholder="Catatan mix: Cth. Ayam Pedas + Keju" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-[11px] focus:outline-none focus:border-brand-500">
+                            <input type="text" id="order-mix-note" placeholder="Catatan mix: Cth. Ayam Pedas + Usus Pedas" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-[11px] focus:outline-none focus:border-brand-500">
                         </div>
                     </div>
                 </div>
@@ -592,10 +596,11 @@
             const pAyamPedas = parseInt(document.getElementById('var-ayam-pedas').value) || 0;
             const pAyamOrig = parseInt(document.getElementById('var-ayam-original').value) || 0;
             const pKeju = parseInt(document.getElementById('var-keju').value) || 0;
+            const pUsusPedas = parseInt(document.getElementById('var-usus-pedas').value) || 0;
             const pMoza = parseInt(document.getElementById('var-moza').value) || 0;
             const pMix = parseInt(document.getElementById('var-mix').value) || 0;
 
-            const regularCount = pAyamPedas + pAyamOrig + pKeju + pMix;
+            const regularCount = pAyamPedas + pAyamOrig + pKeju + pUsusPedas + pMix;
             const mozaCount = pMoza;
 
             const calculatedTotal = (regularCount * 10000) + (mozaCount * 15000);
@@ -616,7 +621,7 @@
             
             document.getElementById('stat-orders-count').innerText = orders.length;
 
-            let variantCounts = { 'Ayam Pedas': 0, 'Ayam Original': 0, 'Keju': 0, 'Moza': 0, 'Mix': 0 };
+            let variantCounts = { 'Ayam Pedas': 0, 'Ayam Original': 0, 'Keju': 0, 'Usus Pedas': 0, 'Moza': 0, 'Mix': 0 };
             orders.forEach(o => {
                 if(o.variants) {
                     for(let k in o.variants) {
@@ -634,6 +639,7 @@
                 'Ayam Pedas': 'bg-rose-500',
                 'Ayam Original': 'bg-amber-500',
                 'Keju': 'bg-yellow-400',
+                'Usus Pedas': 'bg-red-600',
                 'Moza': 'bg-purple-500',
                 'Mix': 'bg-emerald-500'
             };
@@ -745,7 +751,7 @@
             const selectedDate = dateInput.value;
             const filteredOrders = orders.filter(o => o.productionDate === selectedDate);
 
-            let counts = { 'Ayam Pedas': 0, 'Ayam Original': 0, 'Keju': 0, 'Moza': 0, 'Mix': 0 };
+            let counts = { 'Ayam Pedas': 0, 'Ayam Original': 0, 'Keju': 0, 'Usus Pedas': 0, 'Moza': 0, 'Mix': 0 };
             filteredOrders.forEach(o => {
                 if(o.variants) {
                     for(let k in o.variants) {
@@ -767,6 +773,10 @@
                 <div class="bg-white p-3 rounded-xl border border-orange-100 text-center">
                     <p class="text-[10px] text-gray-400 font-medium">Keju</p>
                     <p class="text-base font-bold text-yellow-600 mt-0.5">${counts['Keju']} bks</p>
+                </div>
+                <div class="bg-white p-3 rounded-xl border border-orange-100 text-center">
+                    <p class="text-[10px] text-gray-400 font-medium">Usus Pedas</p>
+                    <p class="text-base font-bold text-red-600 mt-0.5">${counts['Usus Pedas']} bks</p>
                 </div>
                 <div class="bg-white p-3 rounded-xl border border-orange-100 text-center">
                     <p class="text-[10px] text-gray-400 font-medium">Moza</p>
@@ -880,6 +890,7 @@
                     document.getElementById('var-ayam-pedas').value = o.variants['Ayam Pedas'] || 0;
                     document.getElementById('var-ayam-original').value = o.variants['Ayam Original'] || 0;
                     document.getElementById('var-keju').value = o.variants['Keju'] || 0;
+                    document.getElementById('var-usus-pedas').value = o.variants['Usus Pedas'] || 0;
                     document.getElementById('var-moza').value = o.variants['Moza'] || 0;
                     document.getElementById('var-mix').value = o.variants['Mix'] || 0;
                     document.getElementById('order-mix-note').value = o.mixNote || '';
@@ -932,6 +943,7 @@
                 'Ayam Pedas': parseInt(document.getElementById('var-ayam-pedas').value) || 0,
                 'Ayam Original': parseInt(document.getElementById('var-ayam-original').value) || 0,
                 'Keju': parseInt(document.getElementById('var-keju').value) || 0,
+                'Usus Pedas': parseInt(document.getElementById('var-usus-pedas').value) || 0,
                 'Moza': parseInt(document.getElementById('var-moza').value) || 0,
                 'Mix': parseInt(document.getElementById('var-mix').value) || 0,
             };
